@@ -40,6 +40,22 @@ Sistem, yüklenen dosyadaki bilet anahtarlarını (Issue Key) analiz ederek plat
 - **Android Paket Durumu**: Android indirme kutusu (Pozitron tablosu) tek bir yeşil/turkuaz renkli hücreden oluşur ve içinde kalın ve italik olarak **"Android paketini eklemeyi unutma!!!"** metni yer alır.
 - **İndirme Linkleri**: URL kısmında parantez içindeki ek yönergeler kaldırılarak doğrudan temiz bir şekilde `URL: https://dist.pozitron.com` bağlantısı sunulur. Kullanıcı adı olarak `yatfin` bilgisi yer alır.
 
+### E. Jira Filtresi (JQL)
+- **Açıklama**: Arayüzdeki **Jira Filter** butonu, kullanıcıyı aşağıdaki JQL sorgusuyla filtrelenmiş Jira sayfasına yönlendirir:
+  ```sql
+  project IN ("Yatırım Finansman Mobile MW", "Yatırım Finansman Mobile Flutter")
+  AND issuetype IN (Story, "Change Request", Improvement,Bug)
+  AND fixVersion = "1.4.0"
+  AND (
+      status = Approved
+      OR (
+          status = Closed
+          AND resolution IN (Fixed, Done)
+      )
+  )
+  ORDER BY statusCategoryChangedDate DESC
+  ```
+
 ---
 
 ## 3. Ekran Özellikleri ve Kullanıcı Düzenlemeleri
@@ -64,6 +80,6 @@ Rapor oluşturulduktan sonra ekran üzerinde tüm alanlara müdahale edilebilir.
 
 ## 5. Proje Ortamı & Dağıtım Kuralları
 
-- **Lokal Çalıştırma**: Projenin uzak sunuculara veya GitHub Pages'e dağıtım bağımlılığı yoktur. Sadece yerel bilgisayarda çalıştırılacak şekilde konfigüre edilmiştir.
-- **Sunucuyu Başlatma**: `/Users/puraligilm/Documents/Reporter` dizininde terminalden `npm run dev` komutu verilerek yerel sunucu başlatılır.
+- **Lokal Çalıştırma**: `/Users/puraligilm/Documents/Reporter` dizininde terminalden `npm run dev` komutu verilerek yerel sunucu başlatılır.
 - **Derleme Kontrolü**: Kodlarda hata olmadığını doğrulamak için `npm run build` komutu kullanılabilir.
+- **Dağıtım (Deployment)**: Proje GitHub Pages üzerinden `https://yafiqa.github.io/reporter/` adresinde barındırılmaktadır. Reponun `main` veya `master` dallarına yapılan her `push` işleminde, GitHub Actions (`.github/workflows/deploy.yml`) projeyi otomatik olarak derler ve yayına alır.
